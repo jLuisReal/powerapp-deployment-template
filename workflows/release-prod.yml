@@ -1,0 +1,21 @@
+name: Release action
+# Call the reusable workflow release-solution-with-inputs.yml
+# Release your solution to prod when you create a new release.
+
+on:
+  release:
+      types: [created]        
+permissions:
+  contents: write
+jobs:
+  Release-solution:
+    uses: jLuisReal/reusable-workflows/.github/workflows/release-prod-powerapp-ru.yml@main
+    with:
+      solution_name: BasicApp
+      prod_env: prod
+      build_env: dev
+    secrets:
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ENVIRONMENT_URL: ${{secrets.ENVIRONMENT_URL}}
+      CLIENT_ID: ${{secrets.CLIENT_ID}}
+      TENANT_ID: ${{secrets.TENANT_ID}}

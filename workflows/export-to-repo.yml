@@ -1,0 +1,40 @@
+name: export action
+# Call the reusable workflow rexport-powerapp-ru.yml
+# Adds your solution as code to your repository on a branch
+
+on:
+    workflow_dispatch:
+      inputs: 
+        solution_name:
+          description: 'name of the solution to worked on from Power Platform'
+          required: true
+          default: 'BasicApp'
+         #Do Not change these values
+        solution_exported_folder:
+          description: 'folder name for staging the exported solution *do not change*'
+          required: true
+          default: out/exported/
+        solution_folder:
+          description: 'staging the unpacked solution folder before check-in *do not change*'
+          required: true
+          default: out/solutions/
+        solution_target_folder: 
+         description: 'folder name to be created and checked in *do not change*'
+         required: true
+         default: solutions/    
+permissions:
+    contents: write
+jobs:
+  Release-solution:
+    uses: jLuisReal/reusable-workflows/.github/workflows/export-powerapp-ru.yml@main
+    with:
+      env: dev
+      solution_name: ${{inputs.solution_name}}
+      solution_exported_folder: ${{inputs.solution_exported_folder}}
+      solution_folder: ${{inputs.solution_folder}}
+      solution_target_folder: ${{inputs.solution_target_folder}}
+    secrets:
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ENVIRONMENT_URL: ${{secrets.ENVIRONMENT_URL}}
+      CLIENT_ID: ${{secrets.CLIENT_ID}}
+      TENANT_ID: ${{secrets.TENANT_ID}}
